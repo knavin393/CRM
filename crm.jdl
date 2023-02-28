@@ -1,0 +1,96 @@
+application {
+  config {
+    applicationType monolith
+    authenticationType jwt
+    baseName crm
+    blueprints []
+    buildTool maven
+    cacheProvider no
+    clientFramework angular
+    clientPackageManager npm
+    clientTheme none
+    creationTimestamp 1675626557148
+    databaseType sql
+    devDatabaseType mysql
+    dtoSuffix DTO
+    enableGradleEnterprise false
+    enableHibernateCache false
+    enableSwaggerCodegen false
+    enableTranslation false
+    gradleEnterpriseHost ""
+    jhiPrefix jhi
+    jhipsterVersion "7.9.3"
+    jwtSecretKey "AGBok2O+prEScjjMeXMKdw1OVXkNYyUoNceILz1Rml3qtDCSSyt9f7gatIG/op0sZY8wXORsPpT17bkDJpOfWjd6eoCkk0Fu/VmkT5twQq1+OlbCM7FwconYIGbRvN0GEwQ1QXZwnsiNdIOE4tQMMN+45LUHlVlixGl3EPyhIA=="
+    languages [en, fr]
+    messageBroker false
+    microfrontend false
+    microfrontends []
+    nativeLanguage en
+    otherModules []
+    packageName com.codebridgecommunity.crm
+    prodDatabaseType mysql
+    reactive true
+    searchEngine false
+    serverPort 8080
+    serviceDiscoveryType eureka
+    skipClient false
+    skipUserManagement false
+    testFrameworks []
+    websocket false
+    withAdminUi true
+  }
+
+  entities *
+}
+
+entity Product {
+    name String required
+    description String
+    price BigDecimal required min(0)
+    size Size required
+    image ImageBlob
+}
+enum Size {
+    S, M, L, XL, XXL
+}
+entity Customer {
+    firstName String required
+    lastName String required
+    gender Gender required
+    email String required pattern(/^[^@\s]+@[^@\s]+\.[^@\s]+$/)
+    phone String required
+    addressLine1 String required
+    addressLine2 String
+    city String required
+    country String required
+}
+enum Gender {
+    MALE, FEMALE, OTHER
+}
+entity ProductOrder {
+    placedDate Instant required
+    status OrderStatus required
+    code String required
+    invoiceId String
+}
+enum OrderStatus {
+    COMPLETED, PENDING, CANCELLED
+}
+entity OrderItem {
+    quantity Integer required min(0)
+    totalPrice BigDecimal required min(0)
+    status OrderItemStatus required
+}
+enum OrderItemStatus {
+    AVAILABLE, OUT_OF_STOCK, BACK_ORDER
+}
+relationship ManyToOne {
+ OrderItem{product(name) required} to Product
+}
+relationship OneToMany {
+   Customer{order} to ProductOrder{customer(email) required},
+   ProductOrder{orderItem} to OrderItem{order(code) required} ,
+}
+service Product, Customer, ProductOrder, OrderItem with serviceClass
+paginate Product, Customer, ProductOrder, OrderItem with pagination
+microservice Customer, Product, ProductOrder, OrderItem with crm
