@@ -7,9 +7,9 @@ import { finalize, map } from 'rxjs/operators';
 import { ProductOrderFormService, ProductOrderFormGroup } from './product-order-form.service';
 import { IProductOrder } from '../product-order.model';
 import { ProductOrderService } from '../service/product-order.service';
-import { ICustomer } from 'app/entities/crm/customer/customer.model';
-import { CustomerService } from 'app/entities/crm/customer/service/customer.service';
 import { OrderStatus } from 'app/entities/enumerations/order-status.model';
+import { ICustomer } from 'app/entities/customer/customer.model';
+import { CustomerService } from 'app/entities/customer/service/customer.service';
 
 @Component({
   selector: 'jhi-product-order-update',

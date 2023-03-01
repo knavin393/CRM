@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -7,11 +7,12 @@ import { finalize, map } from 'rxjs/operators';
 import { OrderItemFormService, OrderItemFormGroup } from './order-item-form.service';
 import { IOrderItem } from '../order-item.model';
 import { OrderItemService } from '../service/order-item.service';
-import { IProduct } from 'app/entities/crm/product/product.model';
-import { ProductService } from 'app/entities/crm/product/service/product.service';
-import { IProductOrder } from 'app/entities/crm/product-order/product-order.model';
-import { ProductOrderService } from 'app/entities/crm/product-order/service/product-order.service';
 import { OrderItemStatus } from 'app/entities/enumerations/order-item-status.model';
+import { Token } from '@angular/compiler';
+import { IProduct } from 'app/entities/product/product.model';
+import { IProductOrder } from 'app/entities/product-order/product-order.model';
+import { ProductOrderService } from 'app/entities/product-order/service/product-order.service';
+import { ProductService } from 'app/entities/product/service/product.service';
 
 @Component({
   selector: 'jhi-order-item-update',
@@ -28,6 +29,7 @@ export class OrderItemUpdateComponent implements OnInit {
   editForm: OrderItemFormGroup = this.orderItemFormService.createOrderItemFormGroup();
 
   constructor(
+    @Inject(Token)
     protected orderItemService: OrderItemService,
     protected orderItemFormService: OrderItemFormService,
     protected productService: ProductService,
